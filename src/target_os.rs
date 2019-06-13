@@ -86,8 +86,8 @@ impl TargetOsSpecific for Windows {
 
         write!(
             file,
-            "{}/srcds.exe -game tf -console +sv_pure 2 +map cp_process_final +maxplayers 24",
-            srcds_dir.to_string_lossy()
+            "{:?} -game tf -console +sv_pure 2 +map cp_process_final +maxplayers 24",
+            srcds_dir.join("srcds.exe")
         )
     }
 }
