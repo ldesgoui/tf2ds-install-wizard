@@ -1,0 +1,57 @@
+# Based on the "trust" template v0.1.2
+# https://github.com/japaric/trust/tree/v0.1.2
+
+dist: trusty
+language: rust
+services: docker
+sudo: required
+
+env:
+  global:
+    - CRATE_NAME=tf2ds-install-wizard
+
+matrix:
+  include:
+    - env: TARGET=x86_64-unknown-linux-gnu
+    - env: TARGET=x86_64-unknown-linux-musl
+
+before_install:
+  - set -e
+  - rustup self update
+
+install:
+  - sh ci/install.sh
+  - source ~/.cargo/env || true
+
+script:
+  - bash ci/script.sh
+
+after_script: set +e
+
+before_deploy:
+  - sh ci/before_deploy.sh
+
+deploy:
+  api_key:
+    secure: "AGH2qLRn+eDIE0GCS3homJu4Tak1YSfakonV1/z+Pt3zxFuMBvhsFfWYe6HiyvnwZQ3VE789q3ud8SuZRvTKvqZoSzsUTz9pxPk5fGO3FSaN55FpMRUnGmaNMejARUt6X7UsU/+DGANm13CAFwlfrZ71LZcukPuojKfVsJJEZJig718//Dn6LmNCVC8PrbN5zNzrwwZkUu7EeY3q4gBKUNJdkVOwgyfI6vu1lXtIe6y13/DdeEjwERA3CUMyEQhlSgX4iuXgObaYd+hEhrsu4ReaLqkWwLa7iqYLUj2de9IQaV4cpDz0C/fGcCOdJZSGEwcF70eDoB3DBNNFMCxet9T/iajJIg89iWj+QTg5Pz8h36RbfdFJZkWNMIWwg6yk/kbVFeGT7zHg9GH5qLVsF5Si6u6/y4zfT/+x49Amt+5RKX+gZE0vndFqLxvBS677cEyXlXJzZqz7psme1LtiCfp3RwOH9RmK1G1fJIMg+aShi0NcQhKvSoN2q4r7B7Yy8Ax6lBYaO6wNHXzlY7bsTczYc8Jxce/60xXPGmloqi5rBxqJrPXoKArjcJO8/FbnQtwzj6y4ZMwEblHK8YKubnOEZ3WuBo52o8UC2lEW0YyXdur+KczheZ1UVg0LaFyKb6j2Vo1fRBBAL0uw3/EBJ5TeC5Y026vjGHJiqyg5bK0="
+
+  file_glob: true
+  file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
+  on:
+    condition: $TRAVIS_RUST_VERSION = stable
+    tags: true
+  provider: releases
+  skip_cleanup: true
+
+cache: cargo
+before_cache:
+  - chmod -R a+r $HOME/.cargo
+
+branches:
+  only:
+    - /^v\d+\.\d+\.\d+.*$/
+    - master
+
+notifications:
+  email:
+    on_success: never
