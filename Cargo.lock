@@ -614,7 +614,7 @@ dependencies = [
 
 [[package]]
 name = "tf2ds-install-wizard"
-version = "0.1.0"
+version = "0.1.2"
 dependencies = [
  "cursive 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "directories 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",

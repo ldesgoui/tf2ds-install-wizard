@@ -1,6 +1,6 @@
 [package]
 name = "tf2ds-install-wizard"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["ldesgoui <ldesgoui@gmail.com>"]
 edition = "2018"
 
