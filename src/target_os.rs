@@ -1,7 +1,6 @@
 use std::{
     ffi::OsString,
     io::{self, Write as _},
-    os::unix::fs::OpenOptionsExt,
     path::{Path, PathBuf},
     process::Command,
 };
@@ -23,6 +22,7 @@ pub trait TargetOsSpecific {
 
 pub struct Linux;
 
+#[cfg(target_os = "linux")]
 impl TargetOsSpecific for Linux {
     fn steam_dir() -> Option<PathBuf> {
         let base = directories::BaseDirs::new()?;
@@ -41,6 +41,8 @@ impl TargetOsSpecific for Linux {
     }
 
     fn write_script(srcds_dir: &Path) -> io::Result<()> {
+        use std::os::unix::fs::OpenOptionsExt;
+
         let mut file = std::fs::OpenOptions::new()
             .write(true)
             .truncate(true)
