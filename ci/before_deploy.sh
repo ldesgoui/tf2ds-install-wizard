@@ -19,7 +19,7 @@ main() {
 
     cross rustc --bin tf2ds-install-wizard --target $TARGET --release -- -C lto
 
-    cp target/$TARGET/release/tf2-install-wizard $stage/
+    cp target/$TARGET/release/tf2ds-install-wizard $stage/
 
     cd $stage
     tar czf $src/$CRATE_NAME-$TRAVIS_TAG-$TARGET.tar.gz *
