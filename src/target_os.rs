@@ -1,5 +1,3 @@
-//! Behaviors depending on cfg(target_os)
-
 use std::{
     path::{Path, PathBuf},
     process::Command,
