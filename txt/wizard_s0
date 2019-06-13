@@ -1,0 +1,9 @@
+Your installation of Steam was not found.
+
+This program makes the following assumption:
+If you're on Windows, Steam should be in Program Files or Program Files (x86)
+of the drive you ran this program from.
+If you're on Linux, Steam should be in .local/share.
+
+If you installed Steam in a different drive, move this program to said drive
+and start it again.
