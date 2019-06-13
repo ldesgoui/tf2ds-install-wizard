@@ -1,14 +1,14 @@
 #![allow(unused)]
 
-pub mod target_os;
-pub mod utils;
+mod target_os;
+mod utils;
 
 use self::target_os::{TargetOs, TargetOsSpecific as _};
 use cursive::{align, traits::*, views, Cursive};
 use std::path::PathBuf;
 
-struct SteamDir(PathBuf);
-struct SrcdsDir(PathBuf);
+struct SteamPath(PathBuf);
+struct SrcdsPath(PathBuf);
 
 fn main() {
     Cursive::default().with(menu).run()
@@ -26,12 +26,12 @@ fn menu(siv: &mut Cursive) {
 }
 
 fn wizard_s0(siv: &mut Cursive) {
-    if siv.user_data::<SteamDir>().is_some() {
+    if siv.user_data::<SteamPath>().is_some() {
         return wizard_s1(siv);
     }
 
     if let Some(steam_dir) = TargetOs::steam_dir() {
-        siv.set_user_data(SteamDir(steam_dir));
+        siv.set_user_data(SteamPath(steam_dir));
         return wizard_s1(siv);
     }
 
@@ -46,14 +46,14 @@ fn wizard_s0(siv: &mut Cursive) {
 }
 
 fn wizard_s1(siv: &mut Cursive) {
-    if siv.user_data::<SrcdsDir>().is_some() {
+    if siv.user_data::<SrcdsPath>().is_some() {
         return wizard_s2(siv);
     }
 
-    let steam_dir = siv.user_data::<SteamDir>().unwrap();
+    let steam_dir = siv.user_data::<SteamPath>().unwrap();
 
     if let Ok(srcds_dir) = utils::srcds_dir(&steam_dir.0, 232250) {
-        siv.set_user_data(SrcdsDir(srcds_dir));
+        siv.set_user_data(SrcdsPath(srcds_dir));
         return wizard_s2(siv);
     }
 
@@ -61,19 +61,36 @@ fn wizard_s1(siv: &mut Cursive) {
         .child(text(include_str!("../txt/wizard_s1")))
         .child(views::DummyView)
         .child(btn("Log out of Steam", |siv| {
-            utils::exit_steam(&siv.user_data::<SteamDir>().unwrap().0);
+            utils::exit_steam(&siv.user_data::<SteamPath>().unwrap().0);
         }))
-        .child(btn("Launch Steam as anonymous and start download", |siv| {
-            utils::install_srcds(&siv.user_data::<SteamDir>().unwrap().0, 232250);
+        .child(btn("Start download", wizard_s1_download))
+        .child(btn("Restart Install Wizard", menu))
+        .child(btn("Quit", Cursive::quit));
 
-            let contents = views::LinearLayout::vertical()
-                .child(text(include_str!("../txt/wizard_s1_download_started")))
-                .child(views::DummyView)
-                .child(btn("Restart Install Wizard", menu))
-                .child(btn("Quit", Cursive::quit));
+    siv.pop_layer();
+    siv.add_layer(dialog(contents))
+}
 
-            siv.pop_layer();
-            siv.add_layer(dialog(contents))
+fn wizard_s1_download(siv: &mut Cursive) {
+    utils::install_srcds(&siv.user_data::<SteamPath>().unwrap().0, 232250);
+
+    let contents = views::LinearLayout::vertical()
+        .child(text(include_str!("../txt/wizard_s1_download")))
+        .child(views::DummyView)
+        .child(btn("Restart Install Wizard", menu))
+        .child(btn("Quit", Cursive::quit));
+
+    siv.pop_layer();
+    siv.add_layer(dialog(contents));
+}
+
+fn wizard_s2(siv: &mut Cursive) {
+    let contents = views::LinearLayout::vertical()
+        .child(text(include_str!("../txt/wizard_s2")))
+        .child(views::DummyView)
+        .child(btn("Create script", |siv| {
+            TargetOs::write_script(&siv.user_data::<SrcdsPath>().unwrap().0);
+            wizard_end(siv);
         }))
         .child(btn("Restart Install Wizard", menu))
         .child(btn("Quit", Cursive::quit));
@@ -82,11 +99,20 @@ fn wizard_s1(siv: &mut Cursive) {
     siv.add_layer(dialog(contents))
 }
 
-fn wizard_s2(siv: &mut Cursive) {}
+fn wizard_end(siv: &mut Cursive) {
+    let contents = views::LinearLayout::vertical()
+        .child(text(include_str!("../txt/wizard_end")))
+        .child(views::DummyView)
+        .child(btn("Restart Install Wizard", menu))
+        .child(btn("Quit", Cursive::quit));
+
+    siv.pop_layer();
+    siv.add_layer(dialog(contents))
+}
 
 // helpers
 
-fn dialog<V: View + 'static>(view: V) -> views::Dialog {
+fn dialog(view: impl 'static + View) -> views::Dialog {
     views::Dialog::around(view)
         .title("TF2 Dedicated Server Install Wizard")
         .padding_top(1)

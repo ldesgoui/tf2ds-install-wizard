@@ -1,4 +1,7 @@
 use std::{
+    ffi::OsString,
+    io::{self, Write as _},
+    os::unix::fs::OpenOptionsExt,
     path::{Path, PathBuf},
     process::Command,
 };
@@ -15,7 +18,7 @@ compile_error!("Unsupported platform");
 pub trait TargetOsSpecific {
     fn steam_dir() -> Option<PathBuf>;
     fn steam_cmd(steam_dir: &Path) -> Command;
-    fn srcds_cmd(srcds_dir: &Path) -> Command;
+    fn write_script(srcds_dir: &Path) -> io::Result<()>;
 }
 
 pub struct Linux;
@@ -37,8 +40,19 @@ impl TargetOsSpecific for Linux {
         Command::new("steam")
     }
 
-    fn srcds_cmd(srcds_dir: &Path) -> Command {
-        Command::new(srcds_dir.join("srcds_run"))
+    fn write_script(srcds_dir: &Path) -> io::Result<()> {
+        let mut file = std::fs::OpenOptions::new()
+            .write(true)
+            .truncate(true)
+            .create(true)
+            .mode(0o755)
+            .open("./run-tf2ds.sh")?;
+
+        write!(
+            file,
+            "{:?} +sv_pure 2 +map cp_process_final +maxplayers 24",
+            srcds_dir.join("srcds_run"),
+        )
     }
 }
 
@@ -61,7 +75,17 @@ impl TargetOsSpecific for Windows {
         Command::new(steam_dir.join("Steam.exe"))
     }
 
-    fn srcds_cmd(srcds_dir: &Path) -> Command {
-        Command::new(srcds_dir.join("srcds.exe"))
+    fn write_script(srcds_dir: &Path) -> io::Result<()> {
+        let mut file = std::fs::OpenOptions::new()
+            .write(true)
+            .truncate(true)
+            .create(true)
+            .open("./run-tf2ds.bat")?;
+
+        write!(
+            file,
+            "{}/srcds.exe -game tf -console +sv_pure 2 +map cp_process_final +maxplayers 24",
+            srcds_dir.to_string_lossy()
+        )
     }
 }

@@ -1,9 +1,9 @@
 use crate::target_os::{TargetOs, TargetOsSpecific};
-use std::process::Stdio;
 use std::{
     error::Error,
     io,
     path::{Path, PathBuf},
+    process::Stdio,
 };
 
 pub fn srcds_dir(steam_dir: &Path, app_id: u32) -> Result<PathBuf, Box<dyn Error>> {
