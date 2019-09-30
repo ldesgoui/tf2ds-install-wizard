@@ -12,8 +12,10 @@ opt-level = "z"
 panic = "abort"
 
 [dependencies]
-cursive.default_features = false
-cursive.features = ["crossterm-backend"]
-cursive.version = "0.12"
 directories = "2.0"
 steamy-vdf = "0.2"
+
+[dependencies.cursive]
+default_features = false
+features = ["crossterm-backend"]
+version = "0.12"
