@@ -5,10 +5,11 @@ with pkgs;
 
 mkShell {
   buildInputs = [
+    latest.rustChannels.stable.rust
     ncurses
   ];
 
   shellHook = ''
-    W() { cargo watch -x build -s "steam-run target/debug/srcdsds"; }
+    dev() { cargo watch -x build -s "steam-run target/debug/srcdsds"; }
   '';
 }

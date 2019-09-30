@@ -18,4 +18,4 @@ steamy-vdf = "0.2"
 [dependencies.cursive]
 default_features = false
 features = ["crossterm-backend"]
-version = "0.12"
+version = "0.13"
