@@ -10,6 +10,6 @@ mkShell {
   ];
 
   shellHook = ''
-    dev() { cargo watch -x build -s "steam-run target/debug/srcdsds"; }
+    dev() { cargo watch -x build -s "steam-run target/debug/tf2ds-install-wizard"; }
   '';
 }
