@@ -260,16 +260,16 @@ dependencies = [
 
 [[package]]
 name = "directories"
-version = "2.0.1"
+version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cfg-if 0.1.9 (registry+https://github.com/rust-lang/crates.io-index)",
- "dirs-sys 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "dirs-sys 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "dirs-sys"
-version = "0.3.3"
+version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cfg-if 0.1.9 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -612,7 +612,7 @@ name = "tf2ds-install-wizard"
 version = "0.1.2"
 dependencies = [
  "cursive 0.13.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "directories 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "directories 2.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "steamy-vdf 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -702,8 +702,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum darling 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "fcfbcb0c5961907597a7d1148e3af036268f2b773886b8bb3eeb1e1281d3d3d6"
 "checksum darling_core 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "6afc018370c3bff3eb51f89256a6bdb18b4fdcda72d577982a14954a7a0b402c"
 "checksum darling_macro 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "c6d8dac1c6f1d29a41c4712b4400f878cb4fcc4c7628f298dd75038e024998d1"
-"checksum directories 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)" = "2ccc83e029c3cebb4c8155c644d34e3a070ccdb4ff90d369c74cd73f7cb3c984"
-"checksum dirs-sys 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)" = "937756392ec77d1f2dd9dc3ac9d69867d109a2121479d72c364e42f4cab21e2d"
+"checksum directories 2.0.2 (registry+https://github.com/rust-lang/crates.io-index)" = "551a778172a450d7fc12e629ca3b0428d00f6afa9a43da1b630d54604e97371c"
+"checksum dirs-sys 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)" = "afa0b23de8fd801745c471deffa6e12d248f962c9fd4b4c33787b055599bde7b"
 "checksum enum-map 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)" = "7bc0515b284e6ce2cbacd123b339d9c5a0ce49059baa4d9e584ab3803b3dc973"
 "checksum enum-map-derive 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)" = "153f6e8a8b2868e2fedf921b165f30229edcccb74d6a9bb1ccf0480ef61cd07e"
 "checksum enum-map-internals 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "8d7f81655c75281b36ddb9c2a1502afcac9db780859cc5b2eba08efcccb4c510"
